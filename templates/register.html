@@ -109,7 +109,7 @@
             </div>
           </div>
           <div class="d-flex justify-content-center form_container">
-            <form>
+            <form action="{{url_for('signup')}}" method="POST">
               <div class="input-group mb-3">
                 <div class="input-group-append">
                   <span class="input-group-text"
@@ -118,9 +118,8 @@
                 </div>
                 <input
                   type="text"
-                  name=""
+                  name="email"
                   class="form-control input_user"
-                  value=""
                   placeholder="Email"
                 />
               </div>
@@ -132,16 +131,14 @@
                 </div>
                 <input
                   type="password"
-                  name=""
+                  name="password"
                   class="form-control input_pass"
-                  value=""
                   placeholder="Password"
                 />
               </div>
               <div class="d-flex justify-content-center mt-3 login_container">
                 <button
-                  type="button"
-                  name="button"
+                  type="submit"
                   class="btn login_btn"
                   style="margin-top: 10%"
                 >
