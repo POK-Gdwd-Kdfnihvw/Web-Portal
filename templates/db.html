@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .well {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border: none;
+        background-color: white;
+      }
+      .row.content {
+        height: 100%;
+      }
+      .sidenav {
+        background-color: #f1f1f1;
+        height: 140rem;
+      }
+      table {
+        width: 100%;
+        font-size: 10px;
+        border-collapse: collapse;
+      }
+      th {
+        padding: 10px;
+        background-color: #9dc978;
+        color: white;
+      }
+      td {
+        padding: 10px;
+      }
+      tbody tr:nth-child(odd) {
+        background-color: #f5f5f5;
+      }
+      @media screen and (max-width: 767px) {
+        .row.content {
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse visible-xs">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#myNavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Dashboard</a></li>
+            <li><a href="#">Profile</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+          <br />
+          <br />
+          <h4><b>Welcome,</b></h4>
+          <h4><b id="clock"></b></h4>
+          <br/>
+          <br/>
+          <ul class="nav nav-pills nav-stacked">
+            <li class="active">
+              <a href="#" style="background-color: #9dc978">Dashboard</a>
+            </li>
+            <li><a href="#" style="color: #9dc978">Profile</a></li>
+          </ul>
+          <br />
+        </div>
+        <br />
+        <div class="col-sm-9">
+          <h3><b>Hello There!</b></h3>
+          <br />
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="well" style="border-top: 5px solid #9dc978">
+                <h4><b>Current Users</b></h4>
+                <p>1</p>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="well" style="border-top: 5px solid #9dc978">
+                <h4><b>Data Count</b></h4>
+                <p>100</p>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="well" style="border-top: 5px solid #9dc978">
+                <h4><b>Session Count</b></h4>
+                <p>10</p>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="well" style="border-top: 5px solid #9dc978">
+                <h4><b>Current Model</b></h4>
+                <p>Random Forest</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div
+                class="well"
+                style="overflow-x: auto; border-top: 5px solid #9dc978"
+              >
+                <h4><b>Your Data:</b></h4>
+                <br />
+                <table id="data-table">
+                  <thead>
+                    <tr>
+                      <th>Age</th>
+                      <th>Sex</th>
+                      <th>Chest Pain Type</th>
+                      <th>Resting Blood Pressure</th>
+                      <th>Serum Cholesterol</th>
+                      <th>Fasting Blood Sugar</th>
+                      <th>Resting Electrocardiographic Results</th>
+                      <th>Maximum Heart Rate Achieved</th>
+                      <th>Exercise Induced Angina</th>
+                      <th>ST Depression Induced by Exercise</th>
+                      <th>Slope of the Peak Exercise ST Segment</th>
+                      <th>Number of Major Vessels Colored by Fluorosopy</th>
+                      <th>Thalassemia</th>
+                      <th>Heart Disease</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <br /><br />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-7">
+              <div
+                class="well"
+                style="overflow-x: auto; border-top: 5px solid #9dc978"
+              >
+                <h4><b>Update Data:</b></h4>
+                <br />
+                <form action="{{url_for('predict')}}" method="POST">
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Age">Age</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Age"
+                        name="Age"
+                        required
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Sex">Sex</label>
+                      <select class="form-control" id="Sex" name="Sex" required>
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Chest Pain Type">Chest Pain Type</label>
+                      <select
+                        class="form-control"
+                        id="Chest Pain Type"
+                        name="Chest Pain Type"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">Typical Angina</option>
+                        <option value="1">Atypical Angina</option>
+                        <option value="2">Non Anginal Pain</option>
+                        <option value="3">Asymptomatic</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Resting Blood Pressure in mmHg"
+                        >Resting Blood Pressure in mmHg</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Resting Blood Pressure in mmHg"
+                        name="Resting Blood Pressure in mmHg"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Serum Cholesterol in mg/dL"
+                        >Serum Cholestoral in mg/dL</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Serum Cholesterol in mg/dL"
+                        name="Serum Cholesterol in mg/dL"
+                        required
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Fasting Blood Sugar > 120 mg/dL"
+                        >Fasting Blood Sugar > 120 mg/dL</label
+                      >
+                      <select
+                        class="form-control"
+                        id="Fasting Blood Sugar > 120 mg/dL"
+                        name="Fasting Blood Sugar > 120 mg/dL"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Resting Electrocardiographic Results"
+                        >Resting Electrocardiographic Results
+                      </label>
+                      <select
+                        class="form-control"
+                        id="Resting Electrocardiographic Results"
+                        name="Resting Electrocardiographic Results"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">Normal</option>
+                        <option value="1">Having ST-T Wave Abnormality</option>
+                        <option value="2">
+                          Probable or Definite Left Ventricular Hypertrophy
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Maximum Heart Rate Achieved"
+                        >Maximum Heart Rate Achieved</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Maximum Heart Rate Achieved"
+                        name="Maximum Heart Rate Achieved"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label
+                        for="ST Depression Induced by Exercise Relative to Rest"
+                        >ST Depression Induced by Exercise</label
+                      >
+                      <input
+                        type="number"
+                        step="any"
+                        class="form-control"
+                        id="ST Depression Induced by Exercise Relative to Rest"
+                        name="ST Depression Induced by Exercise Relative to Rest"
+                        required
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Exercise Induced Angina"
+                        >Exercise Induced Angina
+                      </label>
+                      <select
+                        class="form-control"
+                        id="Exercise Induced Angina"
+                        name="Exercise Induced Angina"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Slope"
+                        >Slope of the Peak Exercise ST Segment
+                      </label>
+                      <select
+                        class="form-control"
+                        id="Slope"
+                        name="Slope"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="Major Vessels Colored by Fluorosopy"
+                        >Major Vessels Colored by Flourosopy</label
+                      >
+                      <select
+                        class="form-control"
+                        id="Major Vessels Colored by Fluorosopy"
+                        name="Major Vessels Colored by Fluorosopy"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label for="Thalassemia">Thalassemia</label>
+                      <select
+                        class="form-control"
+                        id="Thalassemia"
+                        name="Thalassemia"
+                        required
+                      >
+                        <option disabled selected value>
+                          -- Select an Option --
+                        </option>
+                        <option value="3">Normal</option>
+                        <option value="6">Fixed Defect</option>
+                        <option value="7">Reversable Defect</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <center>
+                    <div class="form-group">
+                      <input
+                        class="btn btn-primary"
+                        type="submit"
+                        value="Submit"
+                        style="
+                          background-color: #9dc978;
+                          border-color: #9dc978;
+                          width: 100%;
+                        "
+                      />
+                    </div>
+                    <div id="result">
+                      <strong style="color: red">{{result}}</strong>
+                    </div>
+                  </center>
+                </form>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <div
+                class="well"
+                style="overflow-x: auto; border-top: 5px solid #9dc978"
+              >
+                <h4><b>View Analytics:</b></h4>
+                <br /><br />
+                <canvas id="doughnut-chart"></canvas>
+                <br /><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const data = [
+        {
+          Age: 45,
+          Sex: 1,
+          ChestPainType: 0,
+          RestingBloodPressure: 120,
+          SerumCholesterol: 200,
+          FastingBloodSugar: 1,
+          RestingElectrocardiographicResults: 0,
+          MaximumHeartRateAchieved: 150,
+          ExerciseInducedAngina: 0,
+          STDepressionInducedByExercise: 1.0,
+          SlopeOfThePeakExerciseSTSegment: 2,
+          NumberOfMajorVesselsColoredByFluorosopy: 0,
+          Thalassemia: 3,
+          HeartDisease: 1,
+        },
+        {
+          Age: 54,
+          Sex: 0,
+          ChestPainType: 1,
+          RestingBloodPressure: 130,
+          SerumCholesterol: 210,
+          FastingBloodSugar: 0,
+          RestingElectrocardiographicResults: 1,
+          MaximumHeartRateAchieved: 160,
+          ExerciseInducedAngina: 1,
+          STDepressionInducedByExercise: 2.3,
+          SlopeOfThePeakExerciseSTSegment: 1,
+          NumberOfMajorVesselsColoredByFluorosopy: 1,
+          Thalassemia: 6,
+          HeartDisease: 2,
+        },
+        {
+          Age: 63,
+          Sex: 1,
+          ChestPainType: 2,
+          RestingBloodPressure: 140,
+          SerumCholesterol: 220,
+          FastingBloodSugar: 1,
+          RestingElectrocardiographicResults: 2,
+          MaximumHeartRateAchieved: 170,
+          ExerciseInducedAngina: 0,
+          STDepressionInducedByExercise: 1.5,
+          SlopeOfThePeakExerciseSTSegment: 0,
+          NumberOfMajorVesselsColoredByFluorosopy: 2,
+          Thalassemia: 7,
+          HeartDisease: 1,
+        },
+      ];
+
+      const tableBody = document.querySelector("#data-table tbody");
+
+      data.forEach((row) => {
+        const tr = document.createElement("tr");
+        Object.values(row).forEach((cell) => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+
+      const heartDiseaseCounts = data.reduce((acc, curr) => {
+        acc[curr.HeartDisease] = (acc[curr.HeartDisease] || 0) + 1;
+        return acc;
+      }, {});
+
+      const doughnutData = {
+        labels: ["Heart Disease", "No Heart Disease"],
+        datasets: [
+          {
+            data: [heartDiseaseCounts[1] || 0, heartDiseaseCounts[2] || 0],
+            backgroundColor: ["#36A2EB", "#FF6384"],
+          },
+        ],
+      };
+
+      const ctx = document.getElementById("doughnut-chart").getContext("2d");
+      new Chart(ctx, {
+        type: "doughnut",
+        data: doughnutData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Heart Disease Distribution",
+            },
+          },
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      var clockElement = document.getElementById("clock");
+
+      function clock() {
+        clockElement.textContent = new Date().toDateString();
+      }
+
+      setInterval(clock, 1000);
+    </script>
+  </body>
+</html>
