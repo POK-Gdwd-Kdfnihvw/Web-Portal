@@ -98,6 +98,14 @@
         background-color: #c0392b !important;
       }
     </style>
+    <script>
+      window.onload = function () {
+        const errorMessage = "{{ error }}";
+        if (errorMessage) {
+          alert(errorMessage);
+        }
+      };
+    </script>
   </head>
   <body>
     <div class="container h-100">
@@ -105,11 +113,15 @@
         <div class="user_card">
           <div class="d-flex justify-content-center">
             <div class="brand_logo_container">
-              <img src="https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg" class="brand_logo" alt="Logo" />
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg"
+                class="brand_logo"
+                alt="Logo"
+              />
             </div>
           </div>
           <div class="d-flex justify-content-center form_container">
-            <form>
+            <form action="{{url_for('signin')}}" method="POST">
               <div class="input-group mb-3">
                 <div class="input-group-append">
                   <span class="input-group-text"
@@ -118,9 +130,8 @@
                 </div>
                 <input
                   type="text"
-                  name=""
+                  name="username"
                   class="form-control input_user"
-                  value=""
                   placeholder="Username"
                 />
               </div>
@@ -132,9 +143,8 @@
                 </div>
                 <input
                   type="password"
-                  name=""
+                  name="password"
                   class="form-control input_pass"
-                  value=""
                   placeholder="Password"
                 />
               </div>
@@ -152,8 +162,7 @@
               </div>
               <div class="d-flex justify-content-center mt-3 login_container">
                 <button
-                  type="button"
-                  name="button"
+                  type="submit"
                   class="btn login_btn"
                   style="margin-top: 10%"
                 >

@@ -47,6 +47,26 @@
         }
       }
     </style>
+    <script>
+      window.onload = function () {
+        var data = "{{data}}";
+        var output = "{{output}}";
+
+        if (data && output) {
+          console.log(data);
+          console.log(output);
+          localStorage.setItem("data", data);
+          localStorage.setItem("output", output[1]);
+        }
+
+        var dataCount = 0;
+        if (localStorage.getItem("data")) {
+          dataCount = 1;
+        }
+
+        document.getElementById("data-count").innerHTML = dataCount;
+      };
+    </script>
   </head>
   <body>
     <nav class="navbar navbar-inverse visible-xs">
@@ -66,7 +86,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Dashboard</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="#" onClick="logout()">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -79,13 +99,15 @@
           <br />
           <h4><b>Welcome,</b></h4>
           <h4><b id="clock"></b></h4>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <ul class="nav nav-pills nav-stacked">
             <li class="active">
               <a href="#" style="background-color: #9dc978">Dashboard</a>
             </li>
-            <li><a href="#" style="color: #9dc978">Profile</a></li>
+            <li>
+              <a href="#" onClick="logout()" style="color: #9dc978">Logout</a>
+            </li>
           </ul>
           <br />
         </div>
@@ -103,13 +125,13 @@
             <div class="col-sm-3">
               <div class="well" style="border-top: 5px solid #9dc978">
                 <h4><b>Data Count</b></h4>
-                <p>100</p>
+                <p id="data-count"></p>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="well" style="border-top: 5px solid #9dc978">
                 <h4><b>Session Count</b></h4>
-                <p>10</p>
+                <p>Undefined</p>
               </div>
             </div>
             <div class="col-sm-3">
@@ -409,54 +431,30 @@
       </div>
     </div>
     <script>
+      var rawlocalData = localStorage.getItem("data");
+      var cleanlocalData = rawlocalData.replace(/[\[\]]/g, "");
+      var localData = cleanlocalData.split(",").map(Number);
+      var localOutput = localStorage.getItem("output");
+
+      console.log(localData[0]);
+      console.log(localOutput);
+
       const data = [
         {
-          Age: 45,
-          Sex: 1,
-          ChestPainType: 0,
-          RestingBloodPressure: 120,
-          SerumCholesterol: 200,
-          FastingBloodSugar: 1,
-          RestingElectrocardiographicResults: 0,
-          MaximumHeartRateAchieved: 150,
-          ExerciseInducedAngina: 0,
-          STDepressionInducedByExercise: 1.0,
-          SlopeOfThePeakExerciseSTSegment: 2,
-          NumberOfMajorVesselsColoredByFluorosopy: 0,
-          Thalassemia: 3,
-          HeartDisease: 1,
-        },
-        {
-          Age: 54,
-          Sex: 0,
-          ChestPainType: 1,
-          RestingBloodPressure: 130,
-          SerumCholesterol: 210,
-          FastingBloodSugar: 0,
-          RestingElectrocardiographicResults: 1,
-          MaximumHeartRateAchieved: 160,
-          ExerciseInducedAngina: 1,
-          STDepressionInducedByExercise: 2.3,
-          SlopeOfThePeakExerciseSTSegment: 1,
-          NumberOfMajorVesselsColoredByFluorosopy: 1,
-          Thalassemia: 6,
-          HeartDisease: 2,
-        },
-        {
-          Age: 63,
-          Sex: 1,
-          ChestPainType: 2,
-          RestingBloodPressure: 140,
-          SerumCholesterol: 220,
-          FastingBloodSugar: 1,
-          RestingElectrocardiographicResults: 2,
-          MaximumHeartRateAchieved: 170,
-          ExerciseInducedAngina: 0,
-          STDepressionInducedByExercise: 1.5,
-          SlopeOfThePeakExerciseSTSegment: 0,
-          NumberOfMajorVesselsColoredByFluorosopy: 2,
-          Thalassemia: 7,
-          HeartDisease: 1,
+          Age: localData[0],
+          Sex: localData[1],
+          ChestPainType: localData[2],
+          RestingBloodPressure: localData[3],
+          SerumCholesterol: localData[4],
+          FastingBloodSugar: localData[5],
+          RestingElectrocardiographicResults: localData[6],
+          MaximumHeartRateAchieved: localData[7],
+          ExerciseInducedAngina: localData[8],
+          STDepressionInducedByExercise: localData[9],
+          SlopeOfThePeakExerciseSTSegment: localData[10],
+          NumberOfMajorVesselsColoredByFluorosopy: localData[11],
+          Thalassemia: localData[12],
+          HeartDisease: localOutput,
         },
       ];
 
@@ -478,7 +476,7 @@
       }, {});
 
       const doughnutData = {
-        labels: ["Heart Disease", "No Heart Disease"],
+        labels: ["No Heart Disease", "Heart Disease"],
         datasets: [
           {
             data: [heartDiseaseCounts[1] || 0, heartDiseaseCounts[2] || 0],
@@ -513,6 +511,12 @@
       }
 
       setInterval(clock, 1000);
+    </script>
+    <script>
+      function logout() {
+        localStorage.clear();
+        window.location.href = "/";
+      }
     </script>
   </body>
 </html>
